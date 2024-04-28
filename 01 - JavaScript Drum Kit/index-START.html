@@ -8,7 +8,6 @@
 </head>
 <body>
 
-
   <div class="keys">
     <div data-key="65" class="key">
       <kbd>A</kbd>
@@ -59,9 +58,25 @@
   <audio data-key="76" src="sounds/tink.wav"></audio>
 
 <script>
+  playSound = ({keyCode}) => {
+    const button = document.querySelector(`div[data-key="${keyCode}"]`);
+    const audio = document.querySelector(`audio[data-key="${keyCode}"]`);
 
+    if(!button) return;
+
+    button.classList.add('playing');
+    audio.currentTime = 0;
+    audio.play();
+  }
+
+  endTransition = ({ propertyName, target }) => {
+    if(propertyName === 'transform') {
+      target.classList.remove('playing');
+    }
+  }
+
+  window.addEventListener('keydown', playSound);
+  document.querySelectorAll('.key').forEach(key => key.addEventListener('transitionend', endTransition));
 </script>
-
-
 </body>
 </html>
