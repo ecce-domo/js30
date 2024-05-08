@@ -37,29 +37,49 @@
     ];
     
     // Array.prototype.filter()
-    // 1. Filter the list of inventors for those who were born in the 1500's
+    console.log(`1. Filter the list of inventors for those who were born in the 1500's`);
+    console.table(
+      inventors.filter(({year}) => year >= 1500 && year <= 1599)
+    );
 
     // Array.prototype.map()
-    // 2. Give us an array of the inventors first and last names
+    console.log('2. Give us an array of the inventors first and last names')
+    console.log(inventors.map(({ first, last }) => `${first} ${last}`));
 
     // Array.prototype.sort()
-    // 3. Sort the inventors by birthdate, oldest to youngest
+    console.log('3. Sort the inventors by birthdate, oldest to youngest');
+    console.table(inventors.sort((a, b) => a.year - b.year));
 
     // Array.prototype.reduce()
-    // 4. How many years did all the inventors live all together?
+    console.log('4. How many years did all the inventors live all together?');
+    console.log(inventors.reduce((total, {passed, year}) => total + passed - year, 0));
 
-    // 5. Sort the inventors by years lived
+    console.log('5. Sort the inventors by years lived');
+    console.table(inventors.sort((a, b) => a.passed - a.year - (b.passed - b.year)));
 
     // 6. create a list of Boulevards in Paris that contain 'de' anywhere in the name
     // https://en.wikipedia.org/wiki/Category:Boulevards_in_Paris
 
+    // Array.from(document.querySelectorAll('.mw-category a')).map(({innerText}) => innerText).filter(i => i.includes('de'));
 
-    // 7. sort Exercise
+
+    console.log(`7. sort Exercise`);
     // Sort the people alphabetically by last name
+    console.table(
+      people
+        .map(person => {
+          const [last, first] = person.split(', ');
+          return { first, last };
+        })
+        .sort((a,b) => a.last === b.last ? 0 : a.last < b.last ? -1 : 1)
+    );
 
-    // 8. Reduce Exercise
+    console.log(`8. Reduce Exercise`);
     // Sum up the instances of each of these
     const data = ['car', 'car', 'truck', 'truck', 'bike', 'walk', 'car', 'van', 'bike', 'walk', 'car', 'van', 'car', 'truck' ];
+    console.log(
+      data.reduce((a,b) => ({ ...a, [b]: (a[b] || 0) + 1}), {})
+    );
 
   </script>
 </body>
