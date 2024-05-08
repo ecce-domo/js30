@@ -22,7 +22,21 @@
   <img src="https://source.unsplash.com/7bwQXzbF6KE/800x500">
 
   <style>
+    :root {
+      --base: #ffc600;
+      --spacing: 10px;
+      --blur: 10px;
+    }
 
+    .hl {
+      color: var(--base);
+     }
+
+     img {
+      padding: var(--spacing);
+      background: var(--base);
+      filter: blur(var(--blur));
+     }
     /*
       misc styles, nothing to do with CSS variables
     */
@@ -46,6 +60,19 @@
   </style>
 
   <script>
+    const controls = Array.from(document.querySelectorAll('.controls input'));
+
+    const handleUpdate = e => {
+      document.documentElement.style.setProperty(`--${e.target.name}`, e.target.value + (e.target.dataset.sizing || ''));
+    }
+    const handleMouseMove = e => {
+      if(e.buttons === 1) {
+        handleUpdate(e);
+      }
+    }
+
+    controls.forEach(control => control.addEventListener('change', e => handleUpdate(e)))
+    controls.forEach(control => control.addEventListener('mousemove', e => handleMouseMove(e)))
   </script>
 
 </body>
