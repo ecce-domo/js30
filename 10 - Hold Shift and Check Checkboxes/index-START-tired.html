@@ -3,14 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <title>Hold Shift to Check Multiple Checkboxes</title>
-  <link rel="icon" href="https://fav.farm/✅" />
+  <link rel="icon" href="https://fav.farm/🔥" />
 </head>
 <body>
   <style>
 
+    :root {
+      --bg: #ffc600;
+    }
+
+    .clear {
+      position: fixed;
+      width: 90px;
+      top: 50px;
+      left: calc(50vw - 300px)
+    }
+
     html {
       font-family: sans-serif;
-      background: #ffc600;
+      background: var(--bg);
     }
 
     .inbox {
@@ -95,29 +106,47 @@
       <p>Don't forget to tweet your result!</p>
     </div>
   </div>
+  <button class="clear">Clear all</button>
 
 <script>
-  let lastCheckedIndex;
+  let shiftDown = false;
+  let lastIndex = false;
+  let yellow = '#ffc600';
+  let red = '#dd2b2b';
 
-  function handleClick(e){
-    const thisIndex = Array
-      .from(checkboxes)
-      .findIndex((box, n) => box === this);
-
-    if(e.shiftKey && this.checked && lastCheckedIndex){
-      Array
-        .from(checkboxes)
-        .slice(
-          Math.min(thisIndex, lastCheckedIndex),
-          Math.max(thisIndex, lastCheckedIndex)
-        )
-        .forEach(box => box.checked = true);
+  const keydown = ({ keyCode }) => {
+    if(keyCode === 16) {
+      shiftDown = true;
+      document.documentElement.style.setProperty('--bg', red);
     }
-    lastCheckedIndex = thisIndex;
   }
 
-  const checkboxes = document.querySelectorAll('.inbox input[type=checkbox]');
-  checkboxes.forEach(box => box.addEventListener('click', handleClick));
+  const keyup = ({ keyCode }) => {
+    if(keyCode === 16) {
+      shiftDown = false;
+      document.documentElement.style.setProperty('--bg', yellow);
+    }
+  }
+
+  const check = index => {
+    if((lastIndex !== false) && shiftDown) {
+      let offset = index > lastIndex ? 0 : 1;
+      Array
+        .from(checkboxes)
+        .slice(Math.min(index, lastIndex) + offset, Math.max(index, lastIndex) + offset)
+        .map(box => box.checked = true);
+    }
+    lastIndex = index;
+  };
+
+  const clearAll = () => checkboxes.forEach(box => box.checked = false);
+
+  window.addEventListener('keydown', keydown);
+  window.addEventListener('keyup', keyup);
+
+  const checkboxes = document.querySelectorAll('input[type=checkbox]');
+  checkboxes.forEach((key, index) => key.addEventListener('mousedown', () => check(index)));
+  document.querySelector('.clear').addEventListener('mousedown', clearAll);
 </script>
 </body>
 </html>
