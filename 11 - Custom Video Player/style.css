@@ -55,7 +55,7 @@ body {
 }
 
 .player__button:focus {
-  border-color: #ffc600;
+  border: #ffc600 1px solid;
 }
 
 .player__slider {
