@@ -3,10 +3,75 @@
   <head>
     <meta charset="UTF-8" />
     <title>Key Detection</title>
-    <script type="text/javascript" src="./cornify.js"></script>
     <link rel="icon" href="https://fav.farm/🔥" />
+    <style>
+      body {
+        font-size: 80px;
+        text-align: center;
+        padding-top: 200px;
+        min-height: 100vh;
+      }
+      body.done {
+        background: linear-gradient(135deg, #00ff77, #03A9F4);
+      }
+    </style>
   </head>
   <body>
-    <script></script>
+    <script>
+      // I did this before watching the video (and it turns out, I took it in a completely different direction 😇)
+      const [up, down, left, right, a, b] = [
+        { text: '☝️', code: 38 },
+        { text: '👇', code: 40 },
+        { text: '👈', code: 37 },
+        { text: '👉', code: 39 },
+        { text: '🅰️', code: 65 },
+        { text: '🅱️', code: 66 }
+      ];
+      const sequence = [up, up, down, down, left, right, left, right, b, a];
+      let progress = 0;
+      let content = '';
+      const congratsChars = ['🙌', '🎉', '🥳', '👏', '🎊'];
+      let intervalId;
+
+      const handleKeyUp = e => {
+        if(progress < sequence.length && e.keyCode === sequence[progress].code) {
+          progress++;
+        } else if (e.keyCode === sequence[0].code) {
+          progress = 1;
+        } else {
+          progress = 0;
+        }
+        content = sequence.slice(0, progress).map(({text}) => text).join(' ');
+        document.body.textContent = content;
+
+        if(progress === sequence.length) congrats();
+        else uncongrats();
+      }
+
+      const congrats = () => {
+        document.body.classList.add('done');
+
+        intervalId = setInterval(
+          () => {
+            const index = Math.floor(sequence.length * Math.random());
+            const congratsIndex = Math.floor(congratsChars.length * Math.random());
+            content = content
+              .split(' ')
+              .map((char, n) => n === index ? congratsChars[congratsIndex] : char)
+              .join(' ');
+
+            document.body.textContent = content;
+          },
+          500,
+        );
+      }
+
+      const uncongrats = () => {
+        document.body.classList.remove('done');
+        clearInterval(intervalId);
+      }
+
+      window.addEventListener('keyup', handleKeyUp);
+    </script>
   </body>
 </html>
