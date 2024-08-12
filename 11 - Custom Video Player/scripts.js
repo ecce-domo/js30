@@ -21,11 +21,10 @@ function skip() {
     video.currentTime = Math.max(Math.min(newTime, video.duration), 0);
 }
 
-function handleRangeUpdate() {
-    video[this.name] = this.value;
+function handleRangeUpdate(e) {
+    video[e.target.name] = e.target.value;
 }
 
-let scrubbing = false;
 function handleScrub(e) {
     video.currentTime = video.duration * e.offsetX / progress.clientWidth;
     updateProgressBarWidth();
@@ -42,7 +41,9 @@ video.addEventListener('pause', updateButton);
 video.addEventListener('timeupdate', updateProgressBarWidth);
 toggle.addEventListener('click', togglePlay);
 skipButtons.forEach(button => button.addEventListener('click', skip));
-ranges.forEach(range => range.addEventListener('change', handleRangeUpdate));
+ranges.forEach(range => range.addEventListener('input', handleRangeUpdate));
+
+let scrubbing = false;
 progress.addEventListener('click', handleScrub);
 progress.addEventListener('mousemove', e => scrubbing && handleScrub(e));
 progress.addEventListener('mousedown', () => scrubbing = true);
