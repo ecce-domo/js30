@@ -11,7 +11,9 @@
     body {
       margin: 0;
       font-family: sans-serif;
-      background: url("https://source.unsplash.com/nDqA4d5NL0k/2000x2000");
+      background: url("https://unsplash.it/1500/900?image=1021");
+      /* unsplash is falling apart, it seems */
+      /* background: url("https://source.unsplash.com/nDqA4d5NL0k/2000x2000"); */
       background-size: cover;
       display: flex;
       align-items: center;
@@ -47,9 +49,20 @@
   <ul id="bands"></ul>
 
 <script>
-const bands = ['The Plot in You', 'The Devil Wears Prada', 'Pierce the Veil', 'Norma Jean', 'The Bled', 'Say Anything', 'The Midway State', 'We Came as Romans', 'Counterparts', 'Oh, Sleeper', 'A Skylit Drive', 'Anywhere But Here', 'An Old Dog'];
+  // solution before watching the video
+  const articles = ['a', 'an', 'the'];
 
+  const formatName = name => name
+    .toLowerCase()
+    .split(' ')
+    .filter(word => !articles.includes(word))
+    .join(' ');
 
+  const bands =
+    ['The Plot in You', 'The Devil Wears Prada', 'Pierce the Veil', 'Norma Jean', 'The Bled', 'Say Anything', 'The Midway State', 'We Came as Romans', 'Counterparts', 'Oh, Sleeper', 'A Skylit Drive', 'Anywhere But Here', 'An Old Dog']
+      .sort((a,b) => formatName(a) < formatName(b) ? -1 : 1);
+
+  document.querySelector('#bands').innerHTML = bands.map(band => `<li>${band}</li>`).join('');
 </script>
 
 </body>
