@@ -185,19 +185,26 @@
 <script>
   const times = Array.from(document.querySelectorAll('[data-time]')).map(node => node.dataset.time);
 
+  /*
   // simple solution
   const total = times.reduce((a,b) => {
     const seconds = parseInt(a.split(':')[1]) + parseInt(b.split(':')[1]);
     const minutes = (parseInt(a.split(':')[0]) + parseInt(b.split(':')[0]) + Math.floor(seconds/60));
     return `${minutes}:${seconds%60 || '00'}`;
   });
+  */
 
   // show hours if > 60:00
   const formatMStoHMS = timeString =>
     parseInt(timeString.split(':')[0]) < 60
       ? timeString
       : `${Math.floor(parseInt(timeString.split(':')[0])/60)}:${parseInt(timeString.split(':')[0])%60 || '00'}:${timeString.split(':')[1]}`;
-  console.log(formatMStoHMS(total));
+
+  // second solution
+  const timeObjects = times.map(time => ({ minutes: parseInt(time.split(':')[0]), seconds: parseInt(time.split(':')[1]) }));
+  const sumObject = timeObjects.reduce((a,b) => ({ minutes: a.minutes + b.minutes, seconds: a.seconds + b.seconds }));
+  const total2 = `${sumObject.minutes + Math.floor(sumObject.seconds/60)}:${sumObject.seconds%60 || '00'}`
+  console.log(formatMStoHMS(total2));
 </script>
 </body>
 </html>
