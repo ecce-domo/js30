@@ -192,7 +192,6 @@
     const minutes = (parseInt(a.split(':')[0]) + parseInt(b.split(':')[0]) + Math.floor(seconds/60));
     return `${minutes}:${seconds%60 || '00'}`;
   });
-  */
 
   // show hours if > 60:00
   const formatMStoHMS = timeString =>
@@ -205,6 +204,16 @@
   const sumObject = timeObjects.reduce((a,b) => ({ minutes: a.minutes + b.minutes, seconds: a.seconds + b.seconds }));
   const total2 = `${sumObject.minutes + Math.floor(sumObject.seconds/60)}:${sumObject.seconds%60 || '00'}`
   console.log(formatMStoHMS(total2));
+  */
+
+  // third method
+  const totalSeconds = times.map(timeString => {
+    const mins = parseInt(timeString.split(':')[0]);
+    const secs = parseInt(timeString.split(':')[1]);
+    return secs + mins * 60;
+  }).reduce((a, b) => a + b);
+  const total3 = `${totalSeconds >= 3600 ? `${Math.floor(totalSeconds/3600)}:` : ''}${Math.floor((totalSeconds%3600)/60) || '00'}:${totalSeconds%60 || '00'}`;
+  console.log(total3);
 </script>
 </body>
 </html>
