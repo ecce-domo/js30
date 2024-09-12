@@ -183,6 +183,21 @@
     </li>
   </ul>
 <script>
+  const times = Array.from(document.querySelectorAll('[data-time]')).map(node => node.dataset.time);
+
+  // simple solution
+  const total = times.reduce((a,b) => {
+    const seconds = parseInt(a.split(':')[1]) + parseInt(b.split(':')[1]);
+    const minutes = (parseInt(a.split(':')[0]) + parseInt(b.split(':')[0]) + Math.floor(seconds/60));
+    return `${minutes}:${seconds%60 || '00'}`;
+  });
+
+  // show hours if > 60:00
+  const formatMStoHMS = timeString =>
+    parseInt(timeString.split(':')[0]) < 60
+      ? timeString
+      : `${Math.floor(parseInt(timeString.split(':')[0])/60)}:${parseInt(timeString.split(':')[0])%60 || '00'}:${timeString.split(':')[1]}`;
+  console.log(formatMStoHMS(total));
 </script>
 </body>
 </html>
